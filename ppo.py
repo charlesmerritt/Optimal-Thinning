@@ -2,7 +2,7 @@ import torch
 import torch.nn as nn
 import torch.optim as optim
 from torch.distributions import Categorical
-from env import ForestGrowthEnv as Env
+from env import ForestGrowthEnv
 
 
 class Memory:
@@ -105,19 +105,21 @@ gamma = 0.99
 clip_param = 0.2
 ppo_epochs = 4
 
-# Initialize policy and optimizer
+# Initialize policy, environment, and optimizer
 policy = ActorCritic()
+env = ForestGrowthEnv()
 optimizer = optim.Adam(policy.parameters(), lr=0.02)
 memory = Memory()
 
 # Example training loop
 for epoch in range(epochs):
-    state = Env.reset()
+    state = env.reset()
     for t in range(step_per_epoch):
         state = torch.tensor([state], dtype=torch.float32)
         action_prob, _ = policy(state)
-        action = torch.distributions.Bernoulli(action_prob).sample().item()
-        next_state, reward, done, _ = Env.step(action)
+        action = torch.distributions.Normal(action_prob, 0.1).sample().clamp(0, 1)
+        next_state, reward, done, _ = env.step(action.detach().numpy())
+        # next_state, reward, done, _ = env.step(action)
         memory.states.append(state)
         memory.actions.append(action)
         memory.logprobs.append(action_prob.log())
