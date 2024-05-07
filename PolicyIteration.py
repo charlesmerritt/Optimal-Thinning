@@ -1,6 +1,6 @@
 import numpy as np
-import gym
-from env import OptimalThinningEnv
+import gymnasium as gym
+from env import ForestGrowthEnv
 
 def policy_iteration(env, gamma=0.99, theta=1e-5):
     def one_step_lookahead(state, V, gamma):
@@ -40,7 +40,7 @@ def policy_iteration(env, gamma=0.99, theta=1e-5):
     return policy, V
 
 if __name__ == "__main__":
-    env = OptimalThinningEnv(max_trees=10, max_steps=100)
+    env = ForestGrowthEnv(max_trees=10, max_steps=100)
     policy, value = policy_iteration(env)
     print(f"Optimal Policy: {policy}")
     print(f"Value Function: {value}")
