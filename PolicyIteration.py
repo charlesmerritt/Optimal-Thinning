@@ -40,7 +40,8 @@ def policy_iteration(env, gamma=0.99, theta=1e-5):
     return policy, V
 
 if __name__ == "__main__":
-    env = ForestGrowthEnv(max_trees=10, max_steps=100)
+    env = gym.make("CartPole-v1", render_mode="human")
+    # env = gym.make("ForestGrowthEnv", render_mode="console")
     policy, value = policy_iteration(env)
     print(f"Optimal Policy: {policy}")
     print(f"Value Function: {value}")
