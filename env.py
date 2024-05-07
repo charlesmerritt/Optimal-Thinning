@@ -27,6 +27,9 @@ class ForestGrowthEnv(gym.Env):
         # Initial state
         self.np_random, _ = gym.utils.seeding.np_random(None)
 
+        # Render
+        self.render_mode = render_mode
+
     def seed(self, seed=None):
         self.np_random, seed = gym.utils.seeding.np_random(seed)
         return [seed]
